@@ -1,5 +1,3 @@
-require "pubsubhub/version"
-
-module Pubsubhub
-  # Your code goes here...
+module PubSubHub
+  autoload :VERSION, 'pubsubhub/version'
 end

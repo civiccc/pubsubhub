@@ -1,4 +1,4 @@
-Copyright (c) 2013 Greg Hurrell
+Copyright (c) 2013 Philotic Inc.
 
 MIT License
 

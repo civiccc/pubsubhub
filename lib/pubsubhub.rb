@@ -1,3 +1,4 @@
+require 'forwardable'
 require 'singleton'
 
 # The `PubSubHub` provides a mechanism to subscribe to events and notify
@@ -53,20 +54,16 @@ class PubSubHub
   VERSION = '0.0.1'
 
   class << self
-    # Convenience methods, delegated to the singleton instance. We use
-    # `define_method` rather than `delegate` to avoid a dependency on Rails.
-    %i[
-      async_dispatcher
-      async_dispatcher=
-      error_handler
-      error_handler=
-      register
-      trigger
-    ].each do |method|
-      define_method(method) do |*args|
-        instance.send(method, *args)
-      end
-    end
+    extend Forwardable
+
+    # Convenience methods:
+    def_delegators :instance,
+      :async_dispatcher,
+      :async_dispatcher=,
+      :error_handler,
+      :error_handler=,
+      :register,
+      :trigger
   end
 
   attr_accessor :async_dispatcher, :error_handler

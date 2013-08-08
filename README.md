@@ -14,6 +14,10 @@ a pattern in which `Bar` can be freed of its dependencies: the parts of the
 system that care when `#foo` happens can subscribe to an event, and `Bar` need
 not even know that those other parts exist.
 
+You can learn more about the motivation behind PubSubHub in our blog post,
+"[Managing side-effects with the Pub-Sub
+model](http://causes.github.io/blog/2013/08/08/managing-side-effects-with-the-publish-subscribe-model/)".
+
 ## Installation
 
 Add this line to your application's `Gemfile`:

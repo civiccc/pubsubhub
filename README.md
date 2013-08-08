@@ -1,6 +1,7 @@
 # PubSubHub
 
 [![Build Status](https://travis-ci.org/causes/pubsubhub.png)](https://travis-ci.org/causes/pubsubhub)
+[![Code Climate](https://codeclimate.com/github/causes/pubsubhub.png)](https://codeclimate.com/github/causes/pubsubhub)
 
 PubSubHub allows you to loosen the coupling between components in a system by
 providing a centralized registry of events and listeners that subscribe to those

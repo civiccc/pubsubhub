@@ -29,8 +29,8 @@ describe PubSubHub do
   context 'an object subscribed for asynchronous notification' do
     let(:registration) { [{ listener: listener, async: true }] }
 
-    it 'runs handler asynchronously' do
-      listener.expects(:async_send).with(:handle_some_event)
+    it 'runs handler via the async dispatcher' do
+      PubSubHub.async_dispatcher.expects(:call).with(listener, :handle_some_event, [])
       PubSubHub.trigger :some_event
     end
   end

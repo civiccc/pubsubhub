@@ -120,7 +120,7 @@ private
   def validate_registry!(registry)
     registry.each do |event_name, registrations|
       registrations.any? do |registration|
-        raise ArgumentError if registration[:listener].blank?
+        raise ArgumentError unless registration[:listener]
       end
     end
   end

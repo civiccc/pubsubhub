@@ -27,11 +27,15 @@ Add this line to your application's `Gemfile`:
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install pubsubhub
+```bash
+$ gem install pubsubhub
+```
 
 ## Usage
 
@@ -40,43 +44,51 @@ events.
 
 To set up event listeners, pass a hash of events and listeners as follows:
 
-    PubSubHub.register(
-      took_action: [
-        { listener: Mailer, async: true },
-      ],
-    )
+```ruby
+PubSubHub.register(
+  took_action: [
+    { listener: Mailer, async: true },
+  ],
+)
+```
 
 To trigger an event, call `PubSubHub.trigger`. All the arguments are
 forwarded to the `listener`.
 
-    class Action
-      def take_action(person)
-        # ...
-        PubSubHub.trigger :took_action, self, person
-      end
-    end
+```ruby
+class Action
+  def take_action(person)
+    # ...
+    PubSubHub.trigger :took_action, self, person
+  end
+end
 
-    class Mailer
-      def self.handle_took_action(action, person)
-        # send `action.creator` an email
-      end
-    end
+class Mailer
+  def self.handle_took_action(action, person)
+    # send `action.creator` an email
+  end
+end
+```
 
 By default, exceptions raised during event propagation are handled by printing
 them to standard error. You can set a custom handler by passing in a callable
 object to `PubSubHub.error_handler=`. We use this at Causes to integrate with
 our `Oops` plug-in, without creating a hard dependency on it:
 
-    PubSubHub.error_handler = ->(exception) { Oops.log(exception) }
+```ruby
+PubSubHub.error_handler = ->(exception) { Oops.log(exception) }
+```
 
 Likewise, dispatch of `async: true` events is handled by a callable passed in
 to `PubSubHub.async_dispatcher=`. The default implementation just calls
 `Object#send` (ie. it is not actually asynchronous). At Causes, we've supplied
 a custom dispatcher that relies on the async_observer plug-in:
 
-    PubSubHub.async_dispatcher = ->(listener, handler, args) do
-      listener.async_send(handler, *args)
-    end
+```ruby
+PubSubHub.async_dispatcher = ->(listener, handler, args) do
+  listener.async_send(handler, *args)
+end
+```
 
 Note that `PubSubHub` is usable in any Ruby application; we happen to use it in
 a Rails application, and make the call to `PubSubHub.register` in a file in the

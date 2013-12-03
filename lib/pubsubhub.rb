@@ -95,7 +95,7 @@ class PubSubHub
   #   end
   #
   def trigger(event_name, *args)
-    @registry[event_name.to_sym].each do |registration|
+    @registry.fetch(event_name.to_sym, []).each do |registration|
       begin
         listener = registration[:listener]
         async    = registration[:async]

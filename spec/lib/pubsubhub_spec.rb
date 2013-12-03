@@ -91,4 +91,11 @@ describe PubSubHub do
       PubSubHub.trigger :some_event
     end
   end
+
+  context 'when nothing is registered to that event' do
+    it 'does nothing, successfully' do
+      expect { PubSubHub.trigger(:some_unregistered_event) }
+        .to_not raise_error
+    end
+  end
 end

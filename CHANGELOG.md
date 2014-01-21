@@ -1,4 +1,4 @@
-### master (unreleased)
+### 0.0.2
 
 * Allow events with no listeners to be triggered without exception
 

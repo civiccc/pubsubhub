@@ -1,4 +1,4 @@
-### master (unreleased)
+### 0.0.3
 
 * Require listeners to be registered with the name of a class instead of the
   constant itself, i.e. `'Constant'` instead of `Constant`.

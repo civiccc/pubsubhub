@@ -97,7 +97,7 @@ class PubSubHub
   def trigger(event_name, *args)
     @registry.fetch(event_name.to_sym, []).each do |registration|
       begin
-        listener = registration[:listener]
+        listener = Object.const_get(registration[:listener])
         async    = registration[:async]
         handler  = :"handle_#{event_name}"
 

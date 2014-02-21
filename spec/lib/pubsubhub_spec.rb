@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PubSubHub do
-  let(:listener)     { Object.new }
+  let(:listener)     { 'Object' }
   let(:registration) { [{ listener: listener }] }
 
   before do
@@ -21,7 +21,7 @@ describe PubSubHub do
 
   context 'an object subscribed for synchronous notification' do
     it 'runs handler synchronously' do
-      listener.expects(:handle_some_event)
+      Object.expects(:handle_some_event)
       PubSubHub.trigger :some_event
     end
   end
@@ -30,7 +30,7 @@ describe PubSubHub do
     let(:registration) { [{ listener: listener, async: true }] }
 
     it 'runs handler via the async dispatcher' do
-      PubSubHub.async_dispatcher.expects(:call).with(listener, :handle_some_event, [])
+      PubSubHub.async_dispatcher.expects(:call).with(Object, :handle_some_event, [])
       PubSubHub.trigger :some_event
     end
   end
@@ -39,23 +39,29 @@ describe PubSubHub do
     let(:args) { [1, 2, 3] }
 
     it 'runs handler synchronously' do
-      listener.expects(:handle_some_event).with(*args)
+      Object.expects(:handle_some_event).with(*args)
       PubSubHub.trigger :some_event, *args
     end
   end
 
   context 'a handler that raises an error' do
-    let(:flakey_listener) { Object.new }
+    class FlakyObject
+      def self.handle_some_event
+        raise
+      end
+    end
+
+    let(:flakey_listener) { 'FlakyObject' }
 
     let(:registration) do
       [
-        { listener: flakey_listener, handler: :non_existent_method },
-        { listener: listener,        handler: :handle_some_event   },
+        { listener: flakey_listener },
+        { listener: listener        },
       ]
     end
 
     it 'does not affect other handlers' do
-      listener.expects(:handle_some_event)
+      Object.expects(:handle_some_event)
       PubSubHub.trigger :some_event
     end
   end
@@ -68,7 +74,7 @@ describe PubSubHub do
 
     it 'calls the dispatcher with the listener, handler method and args' do
       dispatcher = mock()
-      dispatcher.expects(:call).with(listener, :handle_some_event, args)
+      dispatcher.expects(:call).with(Object, :handle_some_event, args)
       PubSubHub.async_dispatcher = dispatcher
       PubSubHub.trigger :some_event, *args
     end

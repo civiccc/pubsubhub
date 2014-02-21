@@ -47,7 +47,7 @@ To set up event listeners, pass a hash of events and listeners as follows:
 ```ruby
 PubSubHub.register(
   took_action: [
-    { listener: Mailer, async: true },
+    { listener: 'Mailer', async: true },
   ],
 )
 ```

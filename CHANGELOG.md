@@ -1,3 +1,8 @@
+### master (unreleased)
+
+* Require listeners to be registered with the name of a class instead of the
+  constant itself, i.e. `'Constant'` instead of `Constant`.
+
 ### 0.0.2
 
 * Allow events with no listeners to be triggered without exception

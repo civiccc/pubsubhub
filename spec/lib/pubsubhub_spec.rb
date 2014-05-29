@@ -26,6 +26,24 @@ describe PubSubHub do
     end
   end
 
+  context 'with a namespaced object' do
+    module Level1
+      module Level2
+        class NestedClass
+          def self.handle_hello
+            'hola'
+          end
+        end
+      end
+    end
+
+    it 'works' do
+      PubSubHub.register(hello: [{ listener: 'Level1::Level2::NestedClass' }])
+      Level1::Level2::NestedClass.expects(:handle_hello)
+      PubSubHub.trigger(:hello)
+    end
+  end
+
   context 'an object subscribed for asynchronous notification' do
     let(:registration) { [{ listener: listener, async: true }] }
 

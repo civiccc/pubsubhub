@@ -51,7 +51,7 @@ require 'singleton'
 class PubSubHub
   include Singleton
 
-  VERSION = '0.0.3'
+  VERSION = '0.0.4'
 
   class << self
     extend Forwardable
@@ -97,7 +97,7 @@ class PubSubHub
   def trigger(event_name, *args)
     @registry.fetch(event_name.to_sym, []).each do |registration|
       begin
-        listener = Object.const_get(registration[:listener])
+        listener = constantize(registration[:listener])
         async    = registration[:async]
         handler  = :"handle_#{event_name}"
 
@@ -119,6 +119,15 @@ private
       registrations.any? do |registration|
         raise ArgumentError unless registration[:listener]
       end
+    end
+  end
+
+  # Object.get_const can't handle namespaces and Rails' constantize introduces
+  # Rails dependencies
+  def constantize(camel_cased_word)
+    names = camel_cased_word.split('::')
+    names.reduce(Object) do |const, name|
+      const.const_get(name)
     end
   end
 end

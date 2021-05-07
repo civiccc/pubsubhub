@@ -9,7 +9,7 @@ describe PubSubHub do
     PubSubHub.register(some_event: registration)
   end
 
-  after { PubSubHub.register(@registry) if @registery }
+  after { PubSubHub.register(@registry) if @registry }
 
   context 'with missing a listener' do
     it 'raises an error' do

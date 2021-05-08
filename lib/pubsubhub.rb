@@ -51,7 +51,7 @@ require 'singleton'
 class PubSubHub
   include Singleton
 
-  VERSION = '0.0.4'
+  VERSION = '0.0.5'
 
   class << self
     extend Forwardable
